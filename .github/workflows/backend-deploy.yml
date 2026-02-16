@@ -1,54 +1,54 @@
 name: Backend CI/CD
 
 on:
-    push:
-        branches:
-            - main
-            - develop
-        paths:
-            - "backend/**"
-            - ".github/workflows/backend-deploy.yml"
-    workflow_dispatch:
+  push:
+    branches:
+      # - main
+      - develop
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-deploy.yml"
+  workflow_dispatch:
 jobs:
-    deploy-to-staging:
-        name: Deploy to Develop
-        runs-on: ubuntu-latest
+  deploy-to-staging:
+    name: Deploy to Develop
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Setup Go
-              uses: actions/setup-go@v3
-              with:
-                  go-version: "1.21"
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.21"
 
-            - name: Cache Go modules
-              uses: actions/cache@v3
-              with:
-                  path: ~/go/pkg/mod
-                  key: ${{ runner.os }}-go-${{ hashFiles('backend/go.sum') }}
-                  restore-keys: |
-                      ${{ runner.os }}-go-
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('backend/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-            - name: Install dependencies
-              working-directory: ./backend
-              run: go mod download
+      - name: Install dependencies
+        working-directory: ./backend
+        run: go mod download
 
-            - name: Build
-              working-directory: ./backend
-              run: go build -v .
+      - name: Build
+        working-directory: ./backend
+        run: go build -v .
 
-            - name: Test with the Go CLI
-              working-directory: ./backend
-              run: go test -short ./... || echo "No tests found or tests skipped"
+      - name: Test with the Go CLI
+        working-directory: ./backend
+        run: go test -short ./... || echo "No tests found or tests skipped"
 
-            - name: Node Setup
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18"
+      - name: Node Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-            - name: Install Caprover
-              run: npm install -g caprover
+      - name: Install Caprover
+        run: npm install -g caprover
 
-            - name: Deploy to CapRover
-              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assess-be'
+      - name: Deploy to CapRover
+        run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assess-be'
