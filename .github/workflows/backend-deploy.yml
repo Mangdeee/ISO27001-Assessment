@@ -51,10 +51,5 @@ jobs:
               run: npm install -g caprover
 
             - name: Deploy to CapRover
-              run: |
-                  if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-                      BRANCH="main"
-                  else
-                      BRANCH="develop"
-                  fi
-                  caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b "$BRANCH" -a '${{ secrets.CAPROVER_BACKEND_APP }}'
+              working-directory: ./backend
+              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment-be'
