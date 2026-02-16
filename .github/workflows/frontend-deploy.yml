@@ -24,5 +24,11 @@ jobs:
             - name: Install Caprover
               run: npm install -g caprover
 
-            - name: Deploy
-              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment'
+            - name: Create deployment tar
+              run: |
+                  cd frontend
+                  tar -czf ../frontend-deploy.tar.gz .
+                  cd ..
+
+            - name: Deploy to CapRover
+              run: caprover deploy --tar frontend-deploy.tar.gz -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment'

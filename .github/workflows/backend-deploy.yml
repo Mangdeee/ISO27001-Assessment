@@ -50,6 +50,11 @@ jobs:
             - name: Install Caprover
               run: npm install -g caprover
 
+            - name: Create deployment tar
+              run: |
+                  cd backend
+                  tar -czf ../backend-deploy.tar.gz .
+                  cd ..
+
             - name: Deploy to CapRover
-              working-directory: ./backend
-              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment-be'
+              run: caprover deploy --tar backend-deploy.tar.gz -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment-be'
