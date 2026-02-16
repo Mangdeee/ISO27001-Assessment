@@ -25,4 +25,4 @@ jobs:
               run: npm install -g caprover
 
             - name: Deploy
-              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'staging' -a 'gap-assessment'
+              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'main' -a 'gap-assessment'
