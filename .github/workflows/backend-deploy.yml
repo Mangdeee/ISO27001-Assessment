@@ -1,0 +1,43 @@
+name: Backend CI/CD
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+        paths:
+            - "backend/**"
+            - ".github/workflows/backend-deploy.yml"
+    workflow_dispatch:
+jobs:
+    deploy-to-staging:
+        name: Deploy to Develop
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup Go
+              uses: actions/setup-go@v3
+              with:
+                  go-version: "1.22.x"
+
+            - name: Install dependencies
+              run: cd cmd/app && go get .
+
+            - name: Build
+              run: go build -v ./...
+
+            - name: Test with the Go CLI
+              run: go test -short ./...
+
+            - name: Node Setup
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "16"
+
+            - name: Install Caprover
+              run: npm install -g caprover
+
+            - name: Deploy
+              run: caprover deploy -h '${{ secrets.CAPROVER_ROOT_URL }}' -p '${{ secrets.CAPROVER_PASSWORD }}' -b 'dev' -a 'gap-assess-be'

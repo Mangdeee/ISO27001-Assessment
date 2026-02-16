@@ -916,12 +916,12 @@ func (app *App) generateClauseDocument(w http.ResponseWriter, r *http.Request) {
 				 ORDER BY due_date NULLS LAST, priority DESC, created_at DESC`,
 				gapAssessmentID, like,
 			)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			defer rows.Close()
-
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+	
 			var items []map[string]interface{}
 			for rows.Next() {
 				var id int
@@ -1181,6 +1181,12 @@ func main() {
 	defer db.Close()
 
 	app := &App{DB: db}
+
+	// Auto-seed data on startup (only if tables are empty)
+	if err := app.SeedData(); err != nil {
+		log.Printf("Warning: Data seeding encountered issues: %v", err)
+		// Don't fail startup if seeding fails - just log it
+	}
 
 	r := mux.NewRouter()
 
