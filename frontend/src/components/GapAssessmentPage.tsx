@@ -203,20 +203,6 @@ const GapAssessmentPage: React.FC = () => {
     }
   };
 
-  const getComplianceColor = (compliance: string) => {
-    switch (compliance) {
-      case 'Fully Compliant':
-        return 'success';
-      case 'Partially Compliant':
-        return 'warning';
-      case 'Not Compliant':
-        return 'error';
-      case 'Not Applicable':
-        return 'default';
-      default:
-        return 'default';
-    }
-  };
 
   if (loading) {
     return (
