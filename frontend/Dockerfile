@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies including serve package
-RUN npm ci && npm install -g serve
+# Install dependencies
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -17,5 +17,5 @@ RUN npm run build
 # Expose port
 EXPOSE 3000
 
-# Serve the built files
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start the application
+CMD ["npm", "start"]
