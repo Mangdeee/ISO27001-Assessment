@@ -1182,10 +1182,10 @@ func main() {
 
 	app := &App{DB: db}
 
-	// Auto-seed data on startup (only if tables are empty)
-	if err := app.SeedData(); err != nil {
-		log.Printf("Warning: Data seeding encountered issues: %v", err)
-		// Don't fail startup if seeding fails - just log it
+	// Initialize database (create tables and seed data)
+	if err := app.InitializeDB(); err != nil {
+		log.Printf("Warning: Database initialization encountered issues: %v", err)
+		// Don't fail startup if initialization fails - just log it
 	}
 
 	r := mux.NewRouter()
