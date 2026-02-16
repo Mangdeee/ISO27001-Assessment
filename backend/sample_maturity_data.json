@@ -5,7 +5,7 @@
     "standard_ref": "Clause-4.1",
     "assessment_question": "Has the organization identified relevant internal and external issues that has the potential to affect its ISMS achieving its intended outcomes?",
     "current_maturity_level": "0 - No",
-    "current_maturity_score": "",
+    "current_maturity_score": null,
     "current_maturity_comments": "",
     "target_maturity_level": "3\u00a0\u2013\u00a0Yes, Consistent but no metrics",
     "target_maturity_score": 3,
